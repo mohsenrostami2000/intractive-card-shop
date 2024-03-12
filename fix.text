@@ -1,0 +1,27 @@
+-Fix inputs 
+-fix error labels
+
+
+
+
+
+*********** help doc *********
+input-item ======>>> used for position error label 
+
+
+
+
+-- expire-date container {
+    width: 100%;
+    display: flex;
+    /* justify-content: space-between; */
+    column-gap: 10px;
+
+    & #month-input,
+    #year-input {
+      width: 30%;
+    }
+}
+
+
+-- problem with border radius when add linear-gradient to form border image element

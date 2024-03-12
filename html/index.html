@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
+
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../images/favicon-32x32.png"
+    />
+
+    <title>Frontend Mentor | Interactive card details form</title>
+
+    <!-- style -->
+    <link rel="stylesheet" href="../css/style.css" />
+    <!-- script -->
+    <script src="../script/script.js" type="module"></script>
+  </head>
+  <body>
+    <header>
+      <!-- background image -->
+      <div class="bg-img"></div>
+    </header>
+
+    <main>
+      <section class="card-section">
+        <!-- back of card -->
+        <div class="card-back">
+          <h5 id="cvc">000</h5>
+        </div>
+
+        <!-- front of card -->
+        <div class="card-front">
+          <img src="../images/card-logo.svg" alt="card logo" />
+          <div class="card-frnot-text-container">
+            <h1 id="credit-card-number">0000 0000 0000 0000</h1>
+            <div class="credit-information">
+              <h3 id="name">Jane Appleseed</h3>
+              <h3 class="expire">
+                <span id="month">00</span>/<span id="year">00</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="text-section">
+        <div class="form-container">
+          <form>
+            <!-- name input -->
+            <div class="input-item">
+              <label for="name-input">Cardholder Name</label>
+
+              <br />
+
+              <input
+                class="input"
+                type="text"
+                id="name-input"
+                placeholder="e.g. Jane Appleseed"
+              />
+
+              <label for="name-input" class="error-label">Can't be blank</label>
+            </div>
+
+            <br />
+
+            <!-- card number input -->
+            <div class="input-item">
+              <label for="card-number-input">Card Number</label>
+
+              <br />
+
+              <input
+                class="input"
+                type="text"
+                id="card-number-input"
+                placeholder="e.g. 1234 5678 9123 0000"
+              />
+
+              <label for="card-number-input" class="error-label"
+                >Wrong format, numbers only</label
+              >
+            </div>
+
+            <br />
+
+            <!-- date section -->
+            <div class="input-item"></div>
+            <div class="expire-lable-container">
+              <label for="month-input">Exp. Date (MM/YY)</label>
+
+              <label for="cvc-number">CVC</label>
+            </div>
+
+            <div id="expire-input-container">
+              <div class="year-month-container">
+                <div class="input-item">
+                  <input
+                    class="input"
+                    type="text"
+                    id="month-input"
+                    placeholder="MM"
+                  />
+
+                  <label for="month-input" class="error-label"
+                    >Can't be blank</label
+                  >
+                </div>
+
+                <div class="input-item">
+                  <input
+                    class="input"
+                    type="text"
+                    id="year-input"
+                    placeholder="YY"
+                  />
+                </div>
+              </div>
+
+              <div class="input-item">
+                <input
+                  class="input"
+                  type="text"
+                  id="cvc-number"
+                  placeholder="e.g. 123 Confirm"
+                />
+                <label for="cvc-number" class="error-label"
+                  >Can't be blank</label
+                >
+              </div>
+            </div>
+          </form>
+          <div class="confirm-btn-container">
+            <button id="confirm-btn">confirm</button>
+          </div>
+        </div>
+
+        <!-- Completed section -->
+        <div class="completed-section">
+          <img src="../images/icon-complete.svg" alt="done!" />
+          <h2>Thank you!</h2>
+          <p>We've added your card details</p>
+          <button id="continue-btn">Continue</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="attribution">
+        Challenge by
+        <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+          >Frontend Mentor</a
+        >. Coded by
+        <a href="https://github.com/mohsenrostami2000">Mohsen Rostami</a>.
+      </div>
+    </footer>
+  </body>
+</html>
