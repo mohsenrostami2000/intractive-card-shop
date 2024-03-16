@@ -1,27 +1,31 @@
--Fix inputs 
--fix error labels
+### CSS BUG
+    -- problem with border radius when add linear-gradient to form border image element
+
+### JS BUG
+    -- bug with card number
+        -- you should click to gruop of number in order to delete the number
+
+
+
+-- input must be fill in order confirm btn work
+-- if confirmation then show confirm section
+
+-- card number should be 16 digits, group in 4 letter, 4 groups overall, serate each group with white space
+
+-- date must be > todays date, if not, show error "expired card"
+
+-- cvc must be 3 digits
+
+-- information card should be shown on card as fill the inputs
+
+-- if click on btn when input is empty, then show error "Can't be blank"
 
 
 
 
+### HOW TO
 
-*********** help doc *********
-input-item ======>>> used for position error label 
-
-
+-- how to change numbers on card one by one
 
 
--- expire-date container {
-    width: 100%;
-    display: flex;
-    /* justify-content: space-between; */
-    column-gap: 10px;
-
-    & #month-input,
-    #year-input {
-      width: 30%;
-    }
-}
-
-
--- problem with border radius when add linear-gradient to form border image element
+-- max length of cvc === 3, max length of year and month === 2

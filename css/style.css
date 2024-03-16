@@ -301,13 +301,12 @@ body p {
 }
 
 /* =============== error style =================== */
+.error {
+  border: 2px solid var(--Input-error) !important;
+}
 .input-item {
   position: relative;
   /* margin-top: -10px; */
-
-  & .input {
-    /* border: 2px solid var(--Input-error); */
-  }
 
   & .error-label {
     display: none;
