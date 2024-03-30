@@ -29,3 +29,10 @@
 
 
 -- max length of cvc === 3, max length of year and month === 2
+
+
+
+============================================ BUG ===========================================
+CARD NUMBER INPUT:
+    
+    2- When mumbers is devided by 4, I can not remove all groups of number, I must click on a group of number in order to delete that group, I want delete all groups of numbers simply by press backspace button on keyboard!

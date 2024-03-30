@@ -7,7 +7,7 @@ const monthInp = document.getElementById("month-input");
 const yearInp = document.getElementById("year-input");
 const cvcInp = document.getElementById("cvc-number");
 
-const allInputs = document.querySelectorAll("input");
+const allInputs = [...document.querySelectorAll("input")];
 
 // card information
 const cardCvc = document.getElementById("cvc");
@@ -21,8 +21,11 @@ const confirmBtn = document.getElementById("confirm-btn");
 const continueBtn = document.getElementById("continue-btn");
 
 // form section
-const formSection = document.getElementsByClassName("form-container");
-const completedSection = document.getElementsByClassName("completed-section");
+const formSection = document.querySelector(".form-container");
+const completedSection = document.querySelector(".completed-section");
+
+// error label
+const errorLabel = [...document.querySelectorAll(".error-label")];
 
 // main functions
 // window.addEventListener("DOMContentLoaded", () => {
@@ -42,6 +45,11 @@ allInputs.forEach((input) => {
       input.setAttribute("maxlength", x);
     };
 
+    //AVOID LETTER FUNCTION
+    const numberOnly = () => {
+      input.value = input.value.replace(/\D/g, ""); // Avoid letters
+    };
+
     // set max-length bassed on ID
     const inpID = input.id;
     inpID == "name-input"
@@ -55,13 +63,13 @@ allInputs.forEach((input) => {
     if (input.value != "" && input.length != 0) {
       if (inpID == "name-input") {
         cardName.innerText = input.value;
+      } else {
+        numberOnly();
       }
       if (inpID == "card-number-input") {
-        input.value = input.value.replace(/\D/g, ""); // Avoid letters
         input.value = input.value.replace(/\d{4}/g, "$& "); // Avoid letters
 
         cardNumber.innerText = input.value;
-        console.log(input.value);
       }
       if (inpID == "year-input") {
         cardYear.innerText = input.value;
@@ -72,28 +80,65 @@ allInputs.forEach((input) => {
       if (inpID == "cvc-number") {
         cardCvc.innerText = input.value;
       }
-    } else {
+    }
+
+    const nameInputID = inpID == "name-input";
+    const cardInputID = inpID == "card-number-input";
+    const monthInputID = inpID == "month-input";
+    const yearInputID = inpID == "year-input";
+    const cvcInputID = inpID == "cvc-number";
+
+    if (input.value == "") {
       // defaut value of card information
-      if (inpID == "name-input") {
+      if (nameInputID) {
         cardName.innerText = "jane appleseed";
       }
-      if (inpID == "card-number-input") {
+      if (cardInputID) {
         cardNumber.innerText = "0000 0000 0000 0000";
       }
-      if (inpID == "month-input") {
+      if (monthInputID) {
         cardMonth.innerText = "00";
       }
-      if (inpID == "year-input") {
+      if (yearInputID) {
         cardYear.innerText = "00";
       }
-      if (inpID == "cvc-number") {
+      if (cvcInputID) {
         cardCvc.innerText = "000";
       }
     }
   });
   input.addEventListener("blur", () => {
-    input.value == ""
-      ? input.classList.add("error")
-      : input.classList.remove("error");
+    // SHOW ERROR
+    if (input.value == "") {
+      input.classList.add("error");
+
+      console.log(input.parentNode.lastElementChild);
+      input.parentNode.lastElementChild.style.display = "block";
+    }
+    // HIDE ERROR
+    if (input.value != "") {
+      input.classList.remove("error");
+    }
   });
 });
+
+confirmBtn.addEventListener("click", () => {
+  if (allInputs.every((input) => input.value)) {
+    formSection.style.display = "none";
+    completedSection.style.display = "block";
+  } else {
+    allInputs.forEach((input) => {
+      if (input.value == "") {
+        input.classList.add("error");
+        showErrorLable();
+      }
+    });
+  }
+});
+
+// show error laber function
+const showErrorLable = () => {
+  errorLabel.forEach((label) => {
+    label.style.display = "block";
+  });
+};
