@@ -108,16 +108,34 @@ allInputs.forEach((input) => {
     }
   });
   input.addEventListener("blur", () => {
+    const errorLabel = document.createElement("label");
+    errorLabel.classList.add("error-label");
+    errorLabel.innerText = "Can't be blank";
+
     // SHOW ERROR
     if (input.value == "") {
       input.classList.add("error");
 
-      console.log(input.parentNode.lastElementChild);
-      input.parentNode.lastElementChild.style.display = "block";
+      // input.parentNode.lastElementChild.style.display = "block";
+
+      if (
+        !input.parentNode.lastElementChild.classList.contains("error-label")
+      ) {
+        input.parentNode.appendChild(errorLabel);
+      }
+
+      errorLabel.style.display = "block";
     }
+
     // HIDE ERROR
     if (input.value != "") {
       input.classList.remove("error");
+      if (input.parentNode.hasChildNodes(errorLabel)) {
+        console.log(input.parentNode.hasChildNodes(errorLabel));
+        console.log("this is before deleting label", input.parentNode);
+        input.parentNode.removeChild(input.parentNode.lastChild);
+        console.log("this is after deleting label", input.parentNode);
+      }
     }
   });
 });
