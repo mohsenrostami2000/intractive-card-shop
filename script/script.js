@@ -24,28 +24,25 @@ const continueBtn = document.getElementById("continue-btn");
 const formSection = document.querySelector(".form-container");
 const completedSection = document.querySelector(".completed-section");
 
-// error label
-const errorLabel = [...document.querySelectorAll(".error-label")];
+const date = new Date();
+const year = date.getUTCFullYear() % 100;
+const month = date.getMonth();
+console.log(date);
+console.log(year);
+console.log(month);
 
-// main functions
-// window.addEventListener("DOMContentLoaded", () => {
-//   updateName();
-//   updateCvc();
-//   updateNumber();
-//   updateMonth();
-//   updateYear();
-// });
+// FUNCTIONS///////////////////////
 
 allInputs.forEach((input) => {
   input.addEventListener("input", () => {
     input.value = input.value.replace(/^\s/g, ""); // Avoid whiteSpace
 
     // set max-lenght to input
-    const setAttributeInp = (x) => {
-      input.setAttribute("maxlength", x);
+    const setAttributeInp = (lenght) => {
+      input.setAttribute("maxlength", lenght);
     };
 
-    //AVOID LETTER FUNCTION
+    // AVOID LETTER FUNCTION
     const numberOnly = () => {
       input.value = input.value.replace(/\D/g, ""); // Avoid letters
     };
@@ -67,14 +64,29 @@ allInputs.forEach((input) => {
         numberOnly();
       }
       if (inpID == "card-number-input") {
-        input.value = input.value.replace(/\d{4}/g, "$& "); // Avoid letters
+        const ZeroNumbers = 16 - input.value.length;
+        const zeroArr = [];
+        for (let i = 0; i < ZeroNumbers; i++) {
+          zeroArr.push(0);
+        }
 
-        cardNumber.innerText = input.value;
+        input.value = input.value.replace(/\d{4}/g, "$& "); // Avoid letters
+        cardNumber.innerText = (
+          input.value + zeroArr.join("").toString()
+        ).replace(/\d{4}/g, "$& ");
       }
       if (inpID == "year-input") {
+        if (input.value < year % 100) {
+          console.log("year expierd");
+          showError(input, "Expierd month");
+        }
         cardYear.innerText = input.value;
       }
       if (inpID == "month-input") {
+        if (input.value < month) {
+          showError(input, "Expierd month");
+          console.log("month expierd");
+        }
         cardMonth.innerText = input.value;
       }
       if (inpID == "cvc-number") {
@@ -108,55 +120,121 @@ allInputs.forEach((input) => {
     }
   });
   input.addEventListener("blur", () => {
-    const errorLabel = document.createElement("label");
-    errorLabel.classList.add("error-label");
-    errorLabel.innerText = "Can't be blank";
-
-    // SHOW ERROR
-    if (input.value == "") {
-      input.classList.add("error");
-
-      // input.parentNode.lastElementChild.style.display = "block";
-
-      if (
-        !input.parentNode.lastElementChild.classList.contains("error-label")
-      ) {
-        input.parentNode.appendChild(errorLabel);
-      }
-
-      errorLabel.style.display = "block";
-    }
-
-    // HIDE ERROR
-    if (input.value != "") {
-      input.classList.remove("error");
-      if (input.parentNode.hasChildNodes(errorLabel)) {
-        console.log(input.parentNode.hasChildNodes(errorLabel));
-        console.log("this is before deleting label", input.parentNode);
-        input.parentNode.removeChild(input.parentNode.lastChild);
-        console.log("this is after deleting label", input.parentNode);
-      }
-    }
+    showError(input, "Can't be blank");
+    hideError(input);
+    checkLength(input);
   });
 });
 
+// ADD EVENT TO CONFIRM BUTTON
 confirmBtn.addEventListener("click", () => {
-  if (allInputs.every((input) => input.value)) {
-    formSection.style.display = "none";
-    completedSection.style.display = "block";
-  } else {
+  if (!allInputs.every((input) => input.value)) {
     allInputs.forEach((input) => {
-      if (input.value == "") {
-        input.classList.add("error");
-        showErrorLable();
-      }
+      showError(input, "Can't be blank");
     });
   }
 });
 
-// show error laber function
-const showErrorLable = () => {
-  errorLabel.forEach((label) => {
-    label.style.display = "block";
-  });
+// ADD EVENT TO CONTINIUE BTN
+continueBtn.addEventListener("click", () => {
+  const startCountdown = (seconds) => {
+    let time = seconds;
+
+    setInterval(() => {
+      console.log(time);
+      if (time > 1) {
+        time--;
+      }
+    }, 1000);
+  };
+
+  startCountdown(3);
+
+  setTimeout(() => {
+    completedSection.style.display = "none";
+    formSection.style.display = "block";
+    window.location.reload();
+  }, 4000);
+});
+
+// SHOW ERROR FUNCTION
+const showError = (x, errorText) => {
+  const errorLabel = document.createElement("label");
+  errorLabel.classList.add("error-label");
+  errorLabel.innerText = errorText;
+  if (x.value == "") {
+    x.classList.add("error");
+
+    if (!x.parentNode.lastElementChild.classList.contains("error-label")) {
+      x.parentNode.appendChild(errorLabel);
+    }
+
+    errorLabel.style.display = "block";
+  }
+};
+
+// CHECK INPUT LENGTH
+const checkLength = (x) => {
+  if (x.value != "") {
+    const errorLabel = document.createElement("label");
+    errorLabel.classList.add("error-label");
+    errorLabel.innerText = "Must be 16 digits";
+    if (x.id == "card-number-input") {
+      if (x.value.length < 19) {
+        if (!x.parentNode.lastElementChild.classList.contains("error-label")) {
+          x.parentNode.appendChild(errorLabel);
+        }
+
+        errorLabel.style.display = "block";
+        x.classList.add("error");
+      }
+    }
+
+    if (x.id == "cvc-number") {
+      if (x.value.length < 3) {
+        if (!x.parentNode.lastElementChild.classList.contains("error-label")) {
+          x.parentNode.appendChild(errorLabel);
+        }
+        errorLabel.innerText = "Must be 3 digits";
+
+        errorLabel.style.display = "block";
+        x.classList.add("error");
+      }
+    }
+
+    if (x.id == "month-input" || x.id == "year-input") {
+      if (x.value < 10 && x.value.length < 2) {
+        x.value = `0${x.value}`;
+      }
+
+      if (x.id == "year-input") {
+        if (x.value < year % 100) {
+          console.log("year expierd");
+          showError(x, "Expierd month");
+        }
+        cardYear.innerText = x.value;
+      }
+      if (x.id == "month-input") {
+        if (x.value < month) {
+          showError(x, "Expierd month");
+          console.log("month expierd");
+        }
+        cardMonth.innerText = x.value;
+      }
+    }
+  }
+};
+
+// HIDE ERROR FUNCTION
+const hideError = (x) => {
+  const errorLabel = document.createElement("label");
+  if (x.value != "") {
+    if (!x.parentNode.lastElementChild.classList.contains("error-label")) {
+      x.parentNode.appendChild(errorLabel);
+    }
+    x.classList.remove("error");
+    if (x.parentNode.hasChildNodes(errorLabel)) {
+      x.parentNode.removeChild(x.parentNode.lastChild);
+    }
+  }
 };
