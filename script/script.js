@@ -132,10 +132,6 @@ allInputs.forEach((input) => {
         if (input.value > 12) {
           showError(input, "Invalid month");
         }
-
-        if (input.value < month) {
-          showError(input, "Expierd Month");
-        }
       }
       if (yearInputID) {
         if (input.value < 10 && input.value.length < 2) {
@@ -161,7 +157,17 @@ confirmBtn.addEventListener("click", () => {
     if (input.value == "") {
       showError(input, "Can't be blank");
     }
+    const monthID = input.id == "month-input";
+    const yearInp = document.getElementById("year-input");
+    if (monthID) {
+      if (input.value < month && yearInp.value <= year) {
+        showError(input, "Expierd Month");
+      } else {
+        hideError(input);
+      }
+    }
   });
+
   const errorLabel = document.querySelectorAll(".error-label");
 
   if (errorLabel.length == 0) {
