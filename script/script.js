@@ -26,7 +26,7 @@ const completedSection = document.querySelector(".completed-section");
 
 const date = new Date();
 const year = date.getUTCFullYear() % 100;
-const month = date.getMonth();
+const month = date.getMonth() + 1;
 
 // FUNCTIONS///////////////////////
 
@@ -37,6 +37,7 @@ allInputs.forEach((input) => {
   const monthInputID = inpID == "month-input";
   const yearInputID = inpID == "year-input";
   const cvcInputID = inpID == "cvc-number";
+
   input.addEventListener("input", () => {
     input.value = input.value.replace(/^\s/g, ""); // Avoid whiteSpace
 
@@ -67,16 +68,17 @@ allInputs.forEach((input) => {
         numberOnly();
       }
       if (inpID == "card-number-input") {
-        const ZeroNumbers = 16 - input.value.length;
+        const ZeroNumbers = 16 - input.value.length; //quantity of zero numbers on card
         const zeroArr = [];
         for (let i = 0; i < ZeroNumbers; i++) {
           zeroArr.push(0);
         }
 
-        input.value = input.value.replace(/\d{4}/g, "$& "); // Avoid letters
-        cardNumber.innerText = (
-          input.value + zeroArr.join("").toString()
-        ).replace(/\d{4}/g, "$& ");
+        input.value = input.value.replace(/(\d{4})(?=\d)/g, "$& ");
+
+        // input.value = input.value.replace(/\d{4}/g, "$& ").trim();
+        cardNumber.innerText = (input.value + zeroArr.join("").toString()) // show zeros on card
+          .replace(/\d{4}/g, "$& ");
       }
       if (inpID == "year-input") {
         cardYear.innerText = input.value;
@@ -126,6 +128,11 @@ allInputs.forEach((input) => {
         if (input.value < 10 && input.value.length < 2) {
           input.value = `0${input.value}`;
         }
+
+        if (input.value > 12) {
+          showError(input, "Invalid month");
+        }
+
         if (input.value < month) {
           showError(input, "Expierd Month");
         }
@@ -156,7 +163,7 @@ confirmBtn.addEventListener("click", () => {
     }
   });
   const errorLabel = document.querySelectorAll(".error-label");
-  console.log(errorLabel);
+
   if (errorLabel.length == 0) {
     formSection.style.display = "none";
     completedSection.style.display = "block";
