@@ -164,6 +164,9 @@ confirmBtn.addEventListener("click", () => {
         showError(input, "Expierd Month");
       } else {
         hideError(input);
+        if (input.value > 12) {
+          showError(input, "Invalid month");
+        }
       }
     }
   });
